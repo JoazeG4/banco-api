@@ -2,6 +2,7 @@ package banco.example.banco.service;
 
 
 import banco.example.banco.model.Corrente;
+import banco.example.banco.model.TipoConta;
 import banco.example.banco.model.request.Request;
 import banco.example.banco.repository.CorrenteRepository;
 import banco.example.banco.repository.PoupancaRepository;
@@ -63,17 +64,17 @@ public class CorrenteService extends ContaService {
         if (request.getConDestino().equals(correnteData.getNumeroDeConta()))
             throw new Exception("Conta destino inválida! " + request.getNumeroDeConta());
 
-        if ("corrente".equals(request.getTipoDeConta())) {
+        if (request.getTipoDeConta() == 1) {
             var contaDestinoData = super.getCorrente(request);
             contaDestinoData.setSaldo(contaDestinoData.getSaldo() + request.getValor());
             correnteRepository.save(contaDestinoData);
 
-        } else if ("poupanca".equals(request.getTipoDeConta())) {
+        } else if (request.getTipoDeConta() == 2) {
             var contaDestinoData = super.getPoupanca(request);
             contaDestinoData.setSaldo(contaDestinoData.getSaldo() + request.getValor());
             poupancaRepository.save(contaDestinoData);
 
-        } else if ("salario".equals(request.getTipoDeConta())) {
+        } else if (request.getTipoDeConta() == 3) {
             var contaDestinoData = super.getSalario(request);
             contaDestinoData.setSaldo(contaDestinoData.getSaldo() + request.getValor());
             salarioRepository.save(contaDestinoData);

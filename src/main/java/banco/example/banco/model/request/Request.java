@@ -6,7 +6,7 @@ import lombok.Data;
 public class Request {
 
     private Double valor;
-    private String tipoDeConta;
+    private int tipoDeConta;
     private String numeroDeConta;
     private String  conDestino;
 }
