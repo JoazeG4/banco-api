@@ -2,7 +2,6 @@ package banco.example.banco.service;
 
 
 import banco.example.banco.model.Corrente;
-import banco.example.banco.model.TipoConta;
 import banco.example.banco.model.request.Request;
 import banco.example.banco.repository.CorrenteRepository;
 import banco.example.banco.repository.PoupancaRepository;

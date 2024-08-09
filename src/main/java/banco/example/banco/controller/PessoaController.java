@@ -1,6 +1,7 @@
 package banco.example.banco.controller;
 
 import banco.example.banco.model.Pessoa;
+import banco.example.banco.model.request.RequestPessoa;
 import banco.example.banco.service.PessoaService;
 import banco.example.banco.service.PoupancaService;
 import lombok.AllArgsConstructor;
@@ -17,7 +18,7 @@ public class PessoaController {
     private PessoaService pessoaService;
 
     @PostMapping("/salvar")
-    public void salvarPessoa(@RequestBody Pessoa pessoa) throws Exception {
-        pessoaService.salvarPessoa(pessoa);
+    public Pessoa salvarPessoa(@RequestBody Pessoa requestPessoa) throws Exception {
+        return pessoaService.salvarPessoa(requestPessoa);
     }
 }

@@ -13,4 +13,7 @@ public class TipoDeContas {
     @Column(nullable = false)
     private int valor;
 
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "pessoa_id")
+    private Pessoa pessoa;
 }

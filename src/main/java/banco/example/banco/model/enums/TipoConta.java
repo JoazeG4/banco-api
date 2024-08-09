@@ -1,4 +1,4 @@
-package banco.example.banco.model;
+package banco.example.banco.model.enums;
 
 public enum TipoConta {
 
