@@ -1,6 +1,5 @@
 package banco.example.banco.model;
 
-import banco.example.banco.model.response.ResponseEndereco;
 import jakarta.persistence.*;
 import lombok.Data;
 
@@ -27,12 +26,12 @@ public class Pessoa {
 
     @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "pessoa_id")
-    private List<Endereco> endereco;
-
-    @Column(nullable = true)
-    private LocalDateTime dataDeCriacao;
+    private List<Endereco> enderecos;
 
     @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "pessoa_id")
     private List<TipoDeContas> tiposDeContas;
+
+    @Column(nullable = false)
+    private LocalDateTime dataDeCriacao;
 }

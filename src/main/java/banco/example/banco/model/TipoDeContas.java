@@ -2,6 +2,8 @@ package banco.example.banco.model;
 
 import jakarta.persistence.*;
 import lombok.Data;
+import java.time.LocalDateTime;
+
 @Table(name = "tipo_de_conta_db")
 @Entity
 @Data
@@ -11,9 +13,13 @@ public class TipoDeContas {
     private Long id;
 
     @Column(nullable = false)
-    private int valor;
+    private Integer valor;
 
-    @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "pessoa_id")
-    private Pessoa pessoa;
+    @Column(nullable = false)
+    private LocalDateTime dataDeCriacao;
+
+    public TipoDeContas(Integer valor, LocalDateTime data) {
+        this.valor = valor;
+        this.dataDeCriacao = data;
+    }
 }

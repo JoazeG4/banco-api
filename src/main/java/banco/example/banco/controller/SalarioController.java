@@ -1,8 +1,7 @@
 package banco.example.banco.controller;
 
-import banco.example.banco.model.Poupanca;
 import banco.example.banco.model.Salario;
-import banco.example.banco.model.request.Request;
+import banco.example.banco.model.request.RequestTransacao;
 import banco.example.banco.service.SalarioService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -22,8 +21,8 @@ public class SalarioController {
     }
 
     @DeleteMapping("/deletar")
-    public ResponseEntity<String> deletarPorNumeroDeConta(@RequestBody Request request) throws Exception {
-        return ResponseEntity.status(HttpStatus.OK).body(salarioService.deletarPorNumeroDeConta(request));
+    public ResponseEntity<String> deletarPorNumeroDeConta(@RequestBody RequestTransacao requestTransacao) throws Exception {
+        return ResponseEntity.status(HttpStatus.OK).body(salarioService.deletarPorNumeroDeConta(requestTransacao));
     }
 
     @DeleteMapping("/deletar-todos")

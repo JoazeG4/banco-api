@@ -1,7 +1,7 @@
 package banco.example.banco.service;
 
 import banco.example.banco.model.Salario;
-import banco.example.banco.model.request.Request;
+import banco.example.banco.model.request.RequestTransacao;
 import banco.example.banco.repository.SalarioRepository;
 import lombok.AllArgsConstructor;
 
@@ -22,12 +22,12 @@ public class SalarioService {
         return "Conta: " + salario.getNumeroDeConta() + " salva com sucesso!";
     }
 
-    public String deletarPorNumeroDeConta(Request request) throws Exception {
-        var correnteData = salarioRepository.findByNumeroDeConta(request.getNumeroDeConta());
+    public String deletarPorNumeroDeConta(RequestTransacao requestTransacao) throws Exception {
+        var correnteData = salarioRepository.findByNumeroDeConta(requestTransacao.getNumeroDeConta());
         if (correnteData.isEmpty())
             throw new Exception("Conta não encontrada!");
-        salarioRepository.deleteByNumeroDeConta(request.getNumeroDeConta());
-        return "Conta: " + request.getNumeroDeConta() + " excluida com sucesso!";
+        salarioRepository.deleteByNumeroDeConta(requestTransacao.getNumeroDeConta());
+        return "Conta: " + requestTransacao.getNumeroDeConta() + " excluida com sucesso!";
     }
 
     public void deletarTodos() throws Exception {

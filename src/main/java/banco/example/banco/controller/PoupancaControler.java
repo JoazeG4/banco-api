@@ -1,8 +1,7 @@
 package banco.example.banco.controller;
 
-import banco.example.banco.model.Corrente;
 import banco.example.banco.model.Poupanca;
-import banco.example.banco.model.request.Request;
+import banco.example.banco.model.request.RequestTransacao;
 import banco.example.banco.service.PoupancaService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -23,8 +22,8 @@ public class PoupancaControler {
     }
 
     @DeleteMapping("/deletar")
-    public ResponseEntity<String> deletarPorNumeroDeConta(@RequestBody Request request) throws Exception {
-        return ResponseEntity.status(HttpStatus.OK).body(poupancaService.deletarPorNumeroDeConta(request));
+    public ResponseEntity<String> deletarPorNumeroDeConta(@RequestBody RequestTransacao requestTransacao) throws Exception {
+        return ResponseEntity.status(HttpStatus.OK).body(poupancaService.deletarPorNumeroDeConta(requestTransacao));
     }
 
     @DeleteMapping("/deletar-todos")

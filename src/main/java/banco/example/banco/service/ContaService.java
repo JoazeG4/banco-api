@@ -3,7 +3,7 @@ package banco.example.banco.service;
 import banco.example.banco.model.Corrente;
 import banco.example.banco.model.Poupanca;
 import banco.example.banco.model.Salario;
-import banco.example.banco.model.request.Request;
+import banco.example.banco.model.request.RequestTransacao;
 import banco.example.banco.repository.CorrenteRepository;
 import banco.example.banco.repository.PoupancaRepository;
 import banco.example.banco.repository.SalarioRepository;
@@ -18,8 +18,8 @@ public class ContaService {
     SalarioRepository salarioRepository;
     PoupancaRepository poupancaRepository;
 
-    public Corrente getCorrente(Request request) throws Exception {
-        var correnteData = correnteRepository.findByNumeroDeConta(request.getConDestino());
+    public Corrente getCorrente(RequestTransacao requestTransacao) throws Exception {
+        var correnteData = correnteRepository.findByNumeroDeConta(requestTransacao.getConDestino());
         if(correnteData.isEmpty())
             throw new Exception("Conta não encontrada!");
         if (!correnteData.get().getStatus())
@@ -27,8 +27,8 @@ public class ContaService {
         return correnteData.get();
     }
 
-    public Poupanca getPoupanca(Request request) throws Exception {
-        var poupancaData = poupancaRepository.findByNumeroDeConta(request.getConDestino());
+    public Poupanca getPoupanca(RequestTransacao requestTransacao) throws Exception {
+        var poupancaData = poupancaRepository.findByNumeroDeConta(requestTransacao.getConDestino());
         if(poupancaData.isEmpty())
             throw new Exception("Conta não encontrada!");
         if(!poupancaData.get().getStatus())
@@ -36,8 +36,8 @@ public class ContaService {
         return poupancaData.get();
     }
 
-    public Salario getSalario(Request request) throws Exception {
-        var salarioData = salarioRepository.findByNumeroDeConta(request.getConDestino());
+    public Salario getSalario(RequestTransacao requestTransacao) throws Exception {
+        var salarioData = salarioRepository.findByNumeroDeConta(requestTransacao.getConDestino());
         if(salarioData.isEmpty())
             throw new Exception("Conta não encontrada!");
         if (!salarioData.get().getStatus())

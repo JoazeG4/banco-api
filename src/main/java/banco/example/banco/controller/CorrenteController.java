@@ -2,7 +2,7 @@ package banco.example.banco.controller;
 
 
 import banco.example.banco.model.Corrente;
-import banco.example.banco.model.request.Request;
+import banco.example.banco.model.request.RequestTransacao;
 import banco.example.banco.service.CorrenteService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -22,8 +22,8 @@ public class CorrenteController {
     }
 
     @DeleteMapping("/deletar")
-    public ResponseEntity<String> deletarPorNumeroDeConta(@RequestBody Request request) throws Exception {
-        return ResponseEntity.status(HttpStatus.OK).body(correnteService.deletarPorNumeroDeConta(request));
+    public ResponseEntity<String> deletarPorNumeroDeConta(@RequestBody RequestTransacao requestTransacao) throws Exception {
+        return ResponseEntity.status(HttpStatus.OK).body(correnteService.deletarPorNumeroDeConta(requestTransacao));
     }
 
     @DeleteMapping("/deletar-todos")
@@ -33,18 +33,18 @@ public class CorrenteController {
     }
 
     @PostMapping("/depositar")
-    public ResponseEntity<String> depositar(@RequestBody Request request) throws Exception {
-        return ResponseEntity.status(HttpStatus.OK).body(correnteService.depositar(request));
+    public ResponseEntity<String> depositar(@RequestBody RequestTransacao requestTransacao) throws Exception {
+        return ResponseEntity.status(HttpStatus.OK).body(correnteService.depositar(requestTransacao));
     }
 
     @PostMapping("/sacar")
-    public ResponseEntity<String> sacar(@RequestBody Request request) throws Exception {
-        return ResponseEntity.status(HttpStatus.OK).body(correnteService.sacar(request));
+    public ResponseEntity<String> sacar(@RequestBody RequestTransacao requestTransacao) throws Exception {
+        return ResponseEntity.status(HttpStatus.OK).body(correnteService.sacar(requestTransacao));
     }
 
     @PostMapping("/transferencia")
-    public ResponseEntity<String> transferencia(@RequestBody Request request) throws Exception {
-        return ResponseEntity.status(HttpStatus.OK).body(correnteService.transferencia(request));
+    public ResponseEntity<String> transferencia(@RequestBody RequestTransacao requestTransacao) throws Exception {
+        return ResponseEntity.status(HttpStatus.OK).body(correnteService.transferencia(requestTransacao));
     }
 
     @GetMapping("/saldo/{numeroDaConta}")

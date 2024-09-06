@@ -1,7 +1,7 @@
 package banco.example.banco.service;
 
 import banco.example.banco.model.Poupanca;
-import banco.example.banco.model.request.Request;
+import banco.example.banco.model.request.RequestTransacao;
 import banco.example.banco.repository.PoupancaRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -23,12 +23,12 @@ public class PoupancaService {
         return "Conta salva com sucesso!";
     }
 
-    public String deletarPorNumeroDeConta(Request request) throws Exception {
-        var contaData = poupancaRepository.findByNumeroDeConta(request.getNumeroDeConta());
+    public String deletarPorNumeroDeConta(RequestTransacao requestTransacao) throws Exception {
+        var contaData = poupancaRepository.findByNumeroDeConta(requestTransacao.getNumeroDeConta());
         if (contaData.isEmpty())
             throw new Exception("Conta não encontrada!");
-        poupancaRepository.deleteByNumeroDeConta(request.getNumeroDeConta());
-        return "Conta: " + request.getNumeroDeConta() + " excluida com sucesso!";
+        poupancaRepository.deleteByNumeroDeConta(requestTransacao.getNumeroDeConta());
+        return "Conta: " + requestTransacao.getNumeroDeConta() + " excluida com sucesso!";
     }
 
     public void deletarTodos() throws Exception {

@@ -2,7 +2,7 @@ package banco.example.banco.service;
 
 
 import banco.example.banco.model.Corrente;
-import banco.example.banco.model.request.Request;
+import banco.example.banco.model.request.RequestTransacao;
 import banco.example.banco.repository.CorrenteRepository;
 import banco.example.banco.repository.PoupancaRepository;
 import banco.example.banco.repository.SalarioRepository;
@@ -26,12 +26,12 @@ public class CorrenteService extends ContaService {
         return "Conta: " + corrente.getNumeroDeConta() + " salva com sucesso!";
     }
 
-    public String deletarPorNumeroDeConta(Request request) throws Exception {
-        var correnteData = correnteRepository.findByNumeroDeConta(request.getNumeroDeConta());
+    public String deletarPorNumeroDeConta(RequestTransacao requestTransacao) throws Exception {
+        var correnteData = correnteRepository.findByNumeroDeConta(requestTransacao.getNumeroDeConta());
         if (correnteData.isEmpty())
             throw new Exception("Conta não encontrada!");
-        correnteRepository.deleteByNumeroDeConta(request.getNumeroDeConta());
-        return "Conta: " + request.getNumeroDeConta() + " excluida com sucesso!";
+        correnteRepository.deleteByNumeroDeConta(requestTransacao.getNumeroDeConta());
+        return "Conta: " + requestTransacao.getNumeroDeConta() + " excluida com sucesso!";
     }
 
     public void deletarTodos() throws Exception {
@@ -40,50 +40,50 @@ public class CorrenteService extends ContaService {
         correnteRepository.deleteAll();
     }
 
-    public String depositar(Request request) throws Exception {
-        var correnteData = this.validarContaCorrente(request.getNumeroDeConta());
-        correnteData.setSaldo(correnteData.getSaldo() + request.getValor());
+    public String depositar(RequestTransacao requestTransacao) throws Exception {
+        var correnteData = this.validarContaCorrente(requestTransacao.getNumeroDeConta());
+        correnteData.setSaldo(correnteData.getSaldo() + requestTransacao.getValor());
         correnteRepository.save(correnteData);
         return "Deposito finalizado!";
     }
 
-    public String sacar(Request request) throws Exception {
-        var correnteData = this.validarContaCorrente(request.getNumeroDeConta());
-        if (request.getValor() > correnteData.getSaldo())
+    public String sacar(RequestTransacao requestTransacao) throws Exception {
+        var correnteData = this.validarContaCorrente(requestTransacao.getNumeroDeConta());
+        if (requestTransacao.getValor() > correnteData.getSaldo())
             throw new Exception("Saldo insuficiente: R$" + correnteData.getSaldo());
-        correnteData.setSaldo(correnteData.getSaldo() - request.getValor());
+        correnteData.setSaldo(correnteData.getSaldo() - requestTransacao.getValor());
         correnteRepository.save(correnteData);
-        return "Você sacou: R$" + request.getValor();
+        return "Você sacou: R$" + requestTransacao.getValor();
     }
 
-    public String transferencia(Request request) throws Exception {
-        var correnteData = this.validarContaCorrente(request.getNumeroDeConta());
-        if (request.getValor() > correnteData.getSaldo())
+    public String transferencia(RequestTransacao requestTransacao) throws Exception {
+        var correnteData = this.validarContaCorrente(requestTransacao.getNumeroDeConta());
+        if (requestTransacao.getValor() > correnteData.getSaldo())
             throw new Exception("Saldo insuficiente: R$" + correnteData.getSaldo());
-        if (request.getConDestino().equals(correnteData.getNumeroDeConta()))
-            throw new Exception("Conta destino inválida! " + request.getNumeroDeConta());
+        if (requestTransacao.getConDestino().equals(correnteData.getNumeroDeConta()))
+            throw new Exception("Conta destino inválida! " + requestTransacao.getNumeroDeConta());
 
-        if (request.getTipoDeConta() == 1) {
-            var contaDestinoData = super.getCorrente(request);
-            contaDestinoData.setSaldo(contaDestinoData.getSaldo() + request.getValor());
+        if (requestTransacao.getTipoDeConta() == 1) {
+            var contaDestinoData = super.getCorrente(requestTransacao);
+            contaDestinoData.setSaldo(contaDestinoData.getSaldo() + requestTransacao.getValor());
             correnteRepository.save(contaDestinoData);
 
-        } else if (request.getTipoDeConta() == 2) {
-            var contaDestinoData = super.getPoupanca(request);
-            contaDestinoData.setSaldo(contaDestinoData.getSaldo() + request.getValor());
+        } else if (requestTransacao.getTipoDeConta() == 2) {
+            var contaDestinoData = super.getPoupanca(requestTransacao);
+            contaDestinoData.setSaldo(contaDestinoData.getSaldo() + requestTransacao.getValor());
             poupancaRepository.save(contaDestinoData);
 
-        } else if (request.getTipoDeConta() == 3) {
-            var contaDestinoData = super.getSalario(request);
-            contaDestinoData.setSaldo(contaDestinoData.getSaldo() + request.getValor());
+        } else if (requestTransacao.getTipoDeConta() == 3) {
+            var contaDestinoData = super.getSalario(requestTransacao);
+            contaDestinoData.setSaldo(contaDestinoData.getSaldo() + requestTransacao.getValor());
             salarioRepository.save(contaDestinoData);
         }
 
-        correnteData.setSaldo(correnteData.getSaldo() - request.getValor());
+        correnteData.setSaldo(correnteData.getSaldo() - requestTransacao.getValor());
         correnteRepository.save(correnteData);
-        return "Transferência realizada: R$" + request.getValor() + "\n" +
-                "Conta envio:" + request.getNumeroDeConta() + "\n" +
-                "Conta destinatário:" + request.getConDestino();
+        return "Transferência realizada: R$" + requestTransacao.getValor() + "\n" +
+                "Conta envio:" + requestTransacao.getNumeroDeConta() + "\n" +
+                "Conta destinatário:" + requestTransacao.getConDestino();
     }
 
     public String saldo(String numeroDaConta) throws Exception {
