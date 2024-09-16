@@ -3,6 +3,7 @@ package banco.example.banco.controller;
 
 import banco.example.banco.model.Corrente;
 import banco.example.banco.model.request.RequestTransacao;
+import banco.example.banco.model.response.ResponseExtrato;
 import banco.example.banco.service.CorrenteService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -43,7 +44,7 @@ public class CorrenteController {
     }
 
     @PostMapping("/transferencia")
-    public ResponseEntity<String> transferencia(@RequestBody RequestTransacao requestTransacao) throws Exception {
+    public ResponseEntity<ResponseExtrato> transferencia(@RequestBody RequestTransacao requestTransacao) throws Exception {
         return ResponseEntity.status(HttpStatus.OK).body(correnteService.transferencia(requestTransacao));
     }
 

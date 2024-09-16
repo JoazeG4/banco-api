@@ -3,9 +3,11 @@ package banco.example.banco.service;
 
 import banco.example.banco.model.Corrente;
 import banco.example.banco.model.request.RequestTransacao;
+import banco.example.banco.model.response.ResponseExtrato;
 import banco.example.banco.repository.CorrenteRepository;
 import banco.example.banco.repository.PoupancaRepository;
 import banco.example.banco.repository.SalarioRepository;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -56,11 +58,11 @@ public class CorrenteService extends ContaService {
         return "Você sacou: R$" + requestTransacao.getValor();
     }
 
-    public String transferencia(RequestTransacao requestTransacao) throws Exception {
+    public ResponseExtrato transferencia(RequestTransacao requestTransacao) throws Exception {
         var correnteData = this.validarContaCorrente(requestTransacao.getNumeroDeConta());
         if (requestTransacao.getValor() > correnteData.getSaldo())
             throw new Exception("Saldo insuficiente: R$" + correnteData.getSaldo());
-        if (requestTransacao.getConDestino().equals(correnteData.getNumeroDeConta()))
+        if (requestTransacao.getContaDestino().equals(correnteData.getNumeroDeConta()))
             throw new Exception("Conta destino inválida! " + requestTransacao.getNumeroDeConta());
 
         if (requestTransacao.getTipoDeConta() == 1) {
@@ -81,9 +83,7 @@ public class CorrenteService extends ContaService {
 
         correnteData.setSaldo(correnteData.getSaldo() - requestTransacao.getValor());
         correnteRepository.save(correnteData);
-        return "Transferência realizada: R$" + requestTransacao.getValor() + "\n" +
-                "Conta envio:" + requestTransacao.getNumeroDeConta() + "\n" +
-                "Conta destinatário:" + requestTransacao.getConDestino();
+        return new ResponseExtrato(requestTransacao.getValor(), requestTransacao.getNumeroDeConta(), requestTransacao.getContaDestino());
     }
 
     public String saldo(String numeroDaConta) throws Exception {
@@ -91,7 +91,7 @@ public class CorrenteService extends ContaService {
         return "Saldo: R$" + correnteData.getSaldo();
     }
 
-    private Corrente validarContaCorrente(String numeroDaConta) throws Exception {
+    private @NotNull Corrente validarContaCorrente(String numeroDaConta) throws Exception {
         var correnteData = correnteRepository.findByNumeroDeConta(numeroDaConta);
         if (correnteData.isEmpty())
             throw new Exception("Conta inválida!" + numeroDaConta);

@@ -1,10 +1,14 @@
 package banco.example.banco.model;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
+
 import java.time.LocalDateTime;
 
 @Table(name = "tipo_de_conta_db")
+@NoArgsConstructor @AllArgsConstructor
 @Entity
 @Data
 public class TipoDeContas {
@@ -13,13 +17,13 @@ public class TipoDeContas {
     private Long id;
 
     @Column(nullable = false)
-    private Integer valor;
+    private Integer conta;
 
     @Column(nullable = false)
     private LocalDateTime dataDeCriacao;
 
-    public TipoDeContas(Integer valor, LocalDateTime data) {
-        this.valor = valor;
+    public TipoDeContas(Integer conta, LocalDateTime data) {
+        this.conta = conta;
         this.dataDeCriacao = data;
     }
 }

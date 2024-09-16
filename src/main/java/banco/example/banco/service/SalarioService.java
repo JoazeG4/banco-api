@@ -15,8 +15,7 @@ public class SalarioService {
 
     public String salvar(Salario salario) throws Exception {
         var correnteData = salarioRepository.findByNumeroDeConta(salario.getNumeroDeConta());
-        if (correnteData.isPresent())
-            throw new Exception("Conta já existente!");
+        if (correnteData.isPresent()) throw new Exception("Conta já existente!");
         salario.setCriacaoDeConta(LocalDateTime.now());
         salarioRepository.save(salario);
         return "Conta: " + salario.getNumeroDeConta() + " salva com sucesso!";
@@ -24,15 +23,13 @@ public class SalarioService {
 
     public String deletarPorNumeroDeConta(RequestTransacao requestTransacao) throws Exception {
         var correnteData = salarioRepository.findByNumeroDeConta(requestTransacao.getNumeroDeConta());
-        if (correnteData.isEmpty())
-            throw new Exception("Conta não encontrada!");
+        if (correnteData.isEmpty()) throw new Exception("Conta não encontrada!");
         salarioRepository.deleteByNumeroDeConta(requestTransacao.getNumeroDeConta());
         return "Conta: " + requestTransacao.getNumeroDeConta() + " excluida com sucesso!";
     }
 
     public void deletarTodos() throws Exception {
-        if (salarioRepository.findAll().isEmpty())
-            throw new Exception("Conta já existente!");
+        if (salarioRepository.findAll().isEmpty()) throw new Exception("Conta já existente!");
         salarioRepository.deleteAll();
     }
 }
