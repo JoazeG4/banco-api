@@ -1,13 +1,9 @@
 package banco.example.banco.model.request;
 
-import lombok.Getter;
+import lombok.Data;
 
-@Getter
+@Data
 public class RequestCpf {
 
-    private final String cpf;
-
-    public RequestCpf(String cpf){
-        this.cpf = cpf;
-    }
+    private String cpf;
 }
