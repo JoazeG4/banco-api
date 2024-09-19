@@ -104,6 +104,6 @@ class PessoaServiceTest {
     }
 
     private @NotNull EnderecoResponse enderecoExterno(){
-        return new EnderecoResponse("00000000","Rua Exemplo", "Bairro Exemplo", "Loca. Exemplo", "EE", "00","Comple. Exemplo");
+        return new EnderecoResponse("00000000","Rua Exemplo", "Bairro Exemplo", "Loca. Exemplo", "EE", "Comple. Exemplo");
     }
 }

@@ -2,25 +2,23 @@ package banco.example.banco.integracoes;
 
 import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
-import lombok.Getter;
+import lombok.Data;
 import lombok.NoArgsConstructor;
 
-@Getter
+@Data
 @AllArgsConstructor
 @NoArgsConstructor
 public class EnderecoResponse {
 
-    @NotBlank(message = "Cep inválido!")
+    @NotBlank(message = "Cep inválido ou nulo!")
     private String cep;
-    @NotBlank(message = "Logradouro inválido!")
+    @NotBlank(message = "Logradouro inválido ou nulo!")
     private String logradouro;
-    @NotBlank(message = "Bairro inválido!")
+    @NotBlank(message = "Bairro inválido ou nulo!")
     private String bairro;
-    @NotBlank(message = "Localidade inválida!")
+    @NotBlank(message = "Localidade inválido ou nulo!")
     private String localidade;
-    @NotBlank(message = "UF inválido!")
+    @NotBlank(message = "UF inválido ou nulo!")
     private String uf;
-    @NotBlank(message = "Número inválido!")
-    private String numero;
     private String complemento;
 }
