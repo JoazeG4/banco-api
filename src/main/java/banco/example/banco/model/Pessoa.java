@@ -39,4 +39,7 @@ public class Pessoa {
     @Column(nullable = false)
     private LocalDateTime dataDeCriacao;
 
+    public static Pessoa construirApartirDeOutraPessoa(Pessoa pessoa){
+        return new Pessoa();
+    }
 }

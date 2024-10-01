@@ -18,9 +18,11 @@ public class EnderecoService {
 
     public EnderecoResponse executa(String cep) {
         var enderecoExterno = enderecoFeign.buscaEnderecoCep(cep);
+
         Set<ConstraintViolation<EnderecoResponse>> invalidacoes = validator.validate(enderecoExterno);
         if (!invalidacoes.isEmpty())
             throw new ConstraintViolationException(invalidacoes);
+
         return enderecoExterno;
     }
 }

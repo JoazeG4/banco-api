@@ -1,6 +1,8 @@
 package banco.example.banco.service;
 
 
+import banco.example.banco.exceptions.AccountNotFoundException;
+import banco.example.banco.exceptions.ExistingAccountException;
 import banco.example.banco.model.Corrente;
 import banco.example.banco.model.request.RequestTransacao;
 import banco.example.banco.model.response.ResponseExtrato;
@@ -19,19 +21,20 @@ public class CorrenteService extends ContaService {
         super(correnteRepository, salarioRepository, poupancaRepository);
     }
 
-    public String salvar(Corrente corrente) throws Exception {
+    public String salvar(Corrente corrente) throws ExistingAccountException {
         var correnteData = correnteRepository.findByNumeroDeConta(corrente.getNumeroDeConta());
         if (correnteData.isPresent())
-            throw new Exception("Conta já existente!");
+            throw new ExistingAccountException("Existing account!");
         corrente.setCriacaoDeConta(LocalDateTime.now());
+        corrente.setStatus(true);
         correnteRepository.save(corrente);
         return "Conta: " + corrente.getNumeroDeConta() + " salva com sucesso!";
     }
 
-    public String deletarPorNumeroDeConta(RequestTransacao requestTransacao) throws Exception {
+    public String deletarPorNumeroDeConta(RequestTransacao requestTransacao) throws AccountNotFoundException {
         var correnteData = correnteRepository.findByNumeroDeConta(requestTransacao.getNumeroDeConta());
         if (correnteData.isEmpty())
-            throw new Exception("Conta não encontrada!");
+            throw new AccountNotFoundException("Conta não encontrada!");
         correnteRepository.deleteByNumeroDeConta(requestTransacao.getNumeroDeConta());
         return "Conta: " + requestTransacao.getNumeroDeConta() + " excluida com sucesso!";
     }
@@ -43,14 +46,14 @@ public class CorrenteService extends ContaService {
     }
 
     public String depositar(RequestTransacao requestTransacao) throws Exception {
-        var correnteData = this.validarContaCorrente(requestTransacao.getNumeroDeConta());
+        var correnteData = this.validarContaCorrenteDataBase(requestTransacao.getNumeroDeConta());
         correnteData.setSaldo(correnteData.getSaldo() + requestTransacao.getValor());
         correnteRepository.save(correnteData);
         return "Deposito finalizado!";
     }
 
     public String sacar(RequestTransacao requestTransacao) throws Exception {
-        var correnteData = this.validarContaCorrente(requestTransacao.getNumeroDeConta());
+        var correnteData = this.validarContaCorrenteDataBase(requestTransacao.getNumeroDeConta());
         if (requestTransacao.getValor() > correnteData.getSaldo())
             throw new Exception("Saldo insuficiente: R$" + correnteData.getSaldo());
         correnteData.setSaldo(correnteData.getSaldo() - requestTransacao.getValor());
@@ -59,7 +62,7 @@ public class CorrenteService extends ContaService {
     }
 
     public ResponseExtrato transferencia(RequestTransacao requestTransacao) throws Exception {
-        var correnteData = this.validarContaCorrente(requestTransacao.getNumeroDeConta());
+        var correnteData = this.validarContaCorrenteDataBase(requestTransacao.getNumeroDeConta());
         if (requestTransacao.getValor() > correnteData.getSaldo())
             throw new Exception("Saldo insuficiente: R$" + correnteData.getSaldo());
         if (requestTransacao.getContaDestino().equals(correnteData.getNumeroDeConta()))
@@ -87,14 +90,14 @@ public class CorrenteService extends ContaService {
     }
 
     public String saldo(String numeroDaConta) throws Exception {
-        var correnteData = this.validarContaCorrente(numeroDaConta);
+        var correnteData = this.validarContaCorrenteDataBase(numeroDaConta);
         return "Saldo: R$" + correnteData.getSaldo();
     }
 
-    private @NotNull Corrente validarContaCorrente(String numeroDaConta) throws Exception {
+    private @NotNull Corrente validarContaCorrenteDataBase(String numeroDaConta) throws Exception {
         var correnteData = correnteRepository.findByNumeroDeConta(numeroDaConta);
         if (correnteData.isEmpty())
-            throw new Exception("Conta inválida!" + numeroDaConta);
+            throw new AccountNotFoundException();
         if (!correnteData.get().getStatus())
             throw new Exception("Conta: " + numeroDaConta + " desativada!");
         return correnteData.get();

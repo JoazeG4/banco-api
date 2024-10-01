@@ -1,5 +1,9 @@
 package banco.example.banco.controller;
 
+import banco.example.banco.controller.httpresponse.RestUtil;
+import banco.example.banco.exceptions.ExistingPersonException;
+import banco.example.banco.exceptions.NoPersonsFoundException;
+import banco.example.banco.exceptions.PersonNotFoundException;
 import banco.example.banco.model.Pessoa;
 import banco.example.banco.model.request.RequestCpf;
 import banco.example.banco.model.request.RequestPessoa;
@@ -20,23 +24,23 @@ public class PessoaController {
     private PessoaService pessoaService;
 
     @PostMapping("/salvar")
-    public ResponseEntity<Pessoa> salvarPessoa(@RequestBody @Valid RequestPessoa requestPessoa) throws Exception {
-        return ResponseEntity.status(HttpStatus.CREATED).body(pessoaService.salvarPessoa(requestPessoa));
+    public ResponseEntity<Pessoa> savePerson(@RequestBody @Valid RequestPessoa requestPessoa) throws ExistingPersonException {
+        return RestUtil.ifComflict409(pessoaService.savePerson(requestPessoa));
     }
 
     @GetMapping("/")
-    public ResponseEntity<List<Pessoa>> listaTodasPessoa() throws Exception {
-        return ResponseEntity.status(HttpStatus.OK).body(pessoaService.listarTodasPessoas());
+    public ResponseEntity<List<Pessoa>> listAllPeople() throws NoPersonsFoundException {
+        return ResponseEntity.status(HttpStatus.OK).body(pessoaService.listAllPeople());
     }
 
     @GetMapping("/cpf")
-    public  ResponseEntity<Pessoa> findByCpf(@RequestBody @Valid RequestCpf requestCpf) throws Exception {
+    public  ResponseEntity<Pessoa> findByCpf(@RequestBody @Valid RequestCpf requestCpf) throws PersonNotFoundException {
         return ResponseEntity.status(HttpStatus.OK).body(pessoaService.findByCpf(requestCpf));
     }
 
     @DeleteMapping("/cpf")
-    public ResponseEntity<String> deletarPorCpf(@RequestBody @Valid RequestCpf requestCpf) throws Exception {
-        pessoaService.deletarPorCpf(requestCpf);
+    public ResponseEntity<String> deleteByCpf(@RequestBody @Valid RequestCpf requestCpf) throws PersonNotFoundException {
+        pessoaService.deleteByCpf(requestCpf);
         return ResponseEntity.status(HttpStatus.OK).body("Excluida com sucesso!");
     }
 

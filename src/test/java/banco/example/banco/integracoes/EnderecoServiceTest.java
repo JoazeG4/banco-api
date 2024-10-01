@@ -10,12 +10,12 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.Set;
 
-import static org.hamcrest.Matchers.any;
-import static org.mockito.Mockito.mock;
+
 import static org.mockito.Mockito.when;
 
 
@@ -44,15 +44,13 @@ class EnderecoServiceTest {
     }
 
     @Test
-    @DisplayName("Deve lançar uma excecao ao retornar um endereco com valores nulos")
+    @DisplayName("Deve lançar uma exceção ao retornar um endereco com valores nulos")
     public void deveLancarUmaExcecaoAoRetornarUmEnderecoNulo() {
         String requestCep = "00000000";
         var enderecoExterno = new EnderecoResponse();
 
         when(enderecoFeign.buscaEnderecoCep(requestCep)).thenReturn(enderecoExterno);
-
-        Set<ConstraintViolation<EnderecoResponse>> invalidacoes = validator.validate(enderecoExterno);
-
+        Set<ConstraintViolation<EnderecoResponse>> invalidacoes = Set.of(Mockito.mock(ConstraintViolation.class));
         when(validator.validate(enderecoExterno)).thenReturn(invalidacoes);
 
         Assertions.assertThrows(ConstraintViolationException.class, () -> enderecoService.executa(requestCep));
