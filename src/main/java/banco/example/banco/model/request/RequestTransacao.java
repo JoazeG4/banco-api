@@ -1,9 +1,14 @@
 package banco.example.banco.model.request;
 
 import jakarta.validation.constraints.*;
+import lombok.AllArgsConstructor;
+import lombok.Data;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
-@Getter
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class RequestTransacao {
 
     @NotNull(message = "Valor inválido ou nulo!")

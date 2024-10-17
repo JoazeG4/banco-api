@@ -1,5 +1,6 @@
 package banco.example.banco.service;
 
+import banco.example.banco.exceptions.AccountNotFoundException;
 import banco.example.banco.model.Corrente;
 import banco.example.banco.model.Poupanca;
 import banco.example.banco.model.Salario;
@@ -19,30 +20,30 @@ public class ContaService {
     SalarioRepository salarioRepository;
     PoupancaRepository poupancaRepository;
 
-    public Corrente getCorrente(@NotNull RequestTransacao requestTransacao) throws Exception {
+    public Corrente getCorrente(@NotNull RequestTransacao requestTransacao) throws RuntimeException {
         var correnteData = correnteRepository.findByNumeroDeConta(requestTransacao.getContaDestino());
         if(correnteData.isEmpty())
-            throw new Exception("Conta não encontrada!");
+            throw new AccountNotFoundException();
         if (!correnteData.get().getStatus())
-            throw new Exception("Conta: " + correnteData.get().getNumeroDeConta() + " desativada!");
+            throw new RuntimeException("Conta: " + correnteData.get().getNumeroDeConta() + " desativada!");
         return correnteData.get();
     }
 
-    public Poupanca getPoupanca(@NotNull RequestTransacao requestTransacao) throws Exception {
+    public Poupanca getPoupanca(@NotNull RequestTransacao requestTransacao) throws RuntimeException {
         var poupancaData = poupancaRepository.findByNumeroDeConta(requestTransacao.getContaDestino());
         if(poupancaData.isEmpty())
-            throw new Exception("Conta não encontrada!");
+            throw new AccountNotFoundException();
         if(!poupancaData.get().getStatus())
-            throw new Exception("Conta: " + poupancaData.get().getNumeroDeConta() + " desativada!");
+            throw new RuntimeException("Conta: " + poupancaData.get().getNumeroDeConta() + " desativada!");
         return poupancaData.get();
     }
 
-    public Salario getSalario(@NotNull RequestTransacao requestTransacao) throws Exception {
+    public Salario getSalario(@NotNull RequestTransacao requestTransacao) throws RuntimeException {
         var salarioData = salarioRepository.findByNumeroDeConta(requestTransacao.getContaDestino());
         if(salarioData.isEmpty())
-            throw new Exception("Conta não encontrada!");
+            throw new AccountNotFoundException();
         if (!salarioData.get().getStatus())
-            throw new Exception("Conta: " + salarioData.get().getNumeroDeConta() + " desativada!");
+            throw new RuntimeException("Conta: " + salarioData.get().getNumeroDeConta() + " desativada!");
         return salarioData.get();
     }
 }

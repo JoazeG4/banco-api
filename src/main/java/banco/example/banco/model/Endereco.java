@@ -9,7 +9,8 @@ import java.time.LocalDateTime;
 
 @Entity
 @Data
-@AllArgsConstructor @NoArgsConstructor
+@AllArgsConstructor
+@NoArgsConstructor
 @Table(name = "endereco_db")
 public class Endereco {
 
@@ -38,7 +39,7 @@ public class Endereco {
     @Column(nullable = false)
     private LocalDateTime dataDeCriacao;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne
     @JoinColumn(name = "pessoa_id")
     private Pessoa pessoa;
 }

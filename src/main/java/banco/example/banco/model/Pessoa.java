@@ -28,18 +28,12 @@ public class Pessoa {
     @Column(nullable = false)
     private Integer idade;
 
-    @OneToMany(cascade = CascadeType.ALL)
-    @JoinColumn(name = "pessoa_id")
+    @OneToMany(mappedBy = "pessoa", cascade = CascadeType.ALL)
     private List<Endereco> enderecos;
 
-    @OneToMany(cascade = CascadeType.ALL)
-    @JoinColumn(name = "pessoa_id")
+    @OneToMany(mappedBy = "pessoa", cascade = CascadeType.ALL)
     private List<TipoDeContas> tiposDeContas;
 
     @Column(nullable = false)
     private LocalDateTime dataDeCriacao;
-
-    public static Pessoa construirApartirDeOutraPessoa(Pessoa pessoa){
-        return new Pessoa();
-    }
 }

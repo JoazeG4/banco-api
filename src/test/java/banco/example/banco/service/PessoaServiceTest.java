@@ -166,7 +166,7 @@ class PessoaServiceTest {
 
     // Database Entities
     private @NotNull Pessoa pessoaData(EnderecoResponse enderecoResponse){
-        var tipoDeConta = new TipoDeContas(1L, 1, LocalDateTime.now());
+        var tipoDeConta = new TipoDeContas(1, LocalDateTime.now());
         var endereco = new Endereco();
         endereco.setDataDeCriacao(LocalDateTime.now());
         BeanUtils.copyProperties(enderecoResponse, endereco);

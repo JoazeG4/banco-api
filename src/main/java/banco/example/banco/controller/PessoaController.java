@@ -17,8 +17,8 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@AllArgsConstructor
 @RequestMapping("/pessoa")
+@AllArgsConstructor
 public class PessoaController {
 
     private PessoaService pessoaService;
@@ -43,5 +43,4 @@ public class PessoaController {
         pessoaService.deleteByCpf(requestCpf);
         return ResponseEntity.status(HttpStatus.OK).body("Excluida com sucesso!");
     }
-
 }

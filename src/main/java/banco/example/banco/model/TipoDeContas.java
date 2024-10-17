@@ -8,7 +8,8 @@ import lombok.NoArgsConstructor;
 import java.time.LocalDateTime;
 
 @Table(name = "tipo_de_conta_db")
-@NoArgsConstructor @AllArgsConstructor
+@NoArgsConstructor
+@AllArgsConstructor
 @Entity
 @Data
 public class TipoDeContas {
@@ -21,6 +22,10 @@ public class TipoDeContas {
 
     @Column(nullable = false)
     private LocalDateTime dataDeCriacao;
+
+    @ManyToOne
+    @JoinColumn(name = "pessoa_id")
+    private Pessoa pessoa;
 
     public TipoDeContas(Integer conta, LocalDateTime data) {
         this.conta = conta;
