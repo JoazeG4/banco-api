@@ -1,5 +1,6 @@
 package banco.example.banco.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -24,6 +25,7 @@ public class TipoDeContas {
     private LocalDateTime dataDeCriacao;
 
     @ManyToOne
+    @JsonBackReference
     @JoinColumn(name = "pessoa_id")
     private Pessoa pessoa;
 

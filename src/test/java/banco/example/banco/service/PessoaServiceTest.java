@@ -79,7 +79,7 @@ class PessoaServiceTest {
     @Test
     @DisplayName("Deve salvar uma pessoa no data-base")
     public void deveSalvarUmaPessoaNoDataBase() {
-        var requestPessoa = new RequestPessoa("Nome exemplo", "000000000000", 18, "00000000", 1);
+        var requestPessoa = new RequestPessoa("Nome exemplo", "000000000000", "usuario@dominio.com", 18, "00000000", 1);
 
         when(pessoaRepository.findByCpf(requestPessoa.getCpf())).thenReturn(Optional.empty());
         when(enderecoService.executa(requestPessoa.getCep())).thenReturn(this.enderecoExterno());
@@ -170,7 +170,16 @@ class PessoaServiceTest {
         var endereco = new Endereco();
         endereco.setDataDeCriacao(LocalDateTime.now());
         BeanUtils.copyProperties(enderecoResponse, endereco);
-        return new Pessoa(1L, "Nome Exemplo", "000000000000", 18, List.of(endereco), List.of(tipoDeConta), LocalDateTime.now());
+
+        return new Pessoa.Builder()
+                .id(1L)
+                .nome("Nome Exemplo")
+                .cpf("000000000000")
+                .idade(18)
+                .endereco(List.of(endereco))
+                .tiposDeContas(List.of(tipoDeConta))
+                .dataDeCriacao(LocalDateTime.now())
+                .build();
     }
 
     private @NotNull EnderecoResponse enderecoExterno(){

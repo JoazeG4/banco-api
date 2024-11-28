@@ -39,14 +39,14 @@ public class PessoaService {
         endereco.setDataDeCriacao(LocalDateTime.now());
         BeanUtils.copyProperties(enderecoExterno, endereco);
 
-        Pessoa pessoa = new Pessoa();
-        pessoa.setNome(requestPessoa.getNome());
-        pessoa.setCpf(requestPessoa.getCpf());
-        pessoa.setIdade(requestPessoa.getIdade());
-        pessoa.setEnderecos(List.of(endereco));
-        pessoa.setDataDeCriacao(LocalDateTime.now());
-        pessoa.setTiposDeContas(List.of(new TipoDeContas(requestPessoa.getTipoDeConta(), LocalDateTime.now())));
-        return Optional.of(pessoaRepository.save(pessoa));
+        return Optional.of(pessoaRepository.save(new Pessoa.Builder()
+                .nome(requestPessoa.getNome())
+                .cpf(requestPessoa.getCpf())
+                .idade(requestPessoa.getIdade())
+                .endereco(List.of(endereco))
+                .dataDeCriacao(LocalDateTime.now())
+                .tiposDeContas(List.of(new TipoDeContas(requestPessoa.getTipoDeConta(), LocalDateTime.now())))
+                .build()));
     }
 
     public List<Pessoa> listAllPeople() throws NoPersonsFoundException {
@@ -60,6 +60,7 @@ public class PessoaService {
                 .orElseThrow(PersonNotFoundException::new);
     }
 
+    @Transactional
     public void deleteByCpf(@NotNull RequestCpf requestCpf) throws PersonNotFoundException {
         pessoaRepository.findByCpf(requestCpf.getCpf())
                 .orElseThrow(PersonNotFoundException::new);
